@@ -7,6 +7,7 @@
         public Block CurrentBlock
         {
             get => currentBlock;
+
             private set
             {
                 currentBlock = value;
@@ -22,7 +23,7 @@
         {
             GameGrid = new GameGrid(22, 10);
             BlockQueue = new BlockQueue();
-            //currentBlock = BlockQueue.GetAndUpdate();
+            currentBlock = BlockQueue.GetAndUpdate();
         }
 
         private bool BlockFits()
@@ -47,9 +48,29 @@
             }
         }
 
+        public void RotateBLockCCW()
+        {
+            CurrentBlock.RotateCCW();
+
+            if(!BlockFits())
+            {
+                CurrentBlock.RotateCCW();
+            }
+        }
         public void MoveBlockLeft()
         {
             CurrentBlock.Move(0, -1);
+
+            if (!BlockFits())
+            {
+                CurrentBlock.Move(0, -1);
+            }
+        }
+
+        public void MoveBlockRight()
+        {
+            CurrentBlock.Move(0, 1);
+
             if (!BlockFits())
             {
                 CurrentBlock.Move(0, -1);
@@ -69,19 +90,21 @@
             }
 
             GameGrid.ClearFullRows();
+
             if (IsGameOver())
             {
                 GameOver = true;
             }
             else
             {
-                //CurrentBlock = BlockQueue.GetAndUpdate();
+                CurrentBlock = BlockQueue.GetAndUpdate();
             }
         }
 
         public void MoveBlockDown()
         {
             CurrentBlock.Move(1, 0);
+
             if (!BlockFits())
             {
                 CurrentBlock.Move(-1, 0);

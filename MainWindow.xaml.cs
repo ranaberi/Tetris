@@ -93,6 +93,17 @@ namespace Tetris
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
         }
+
+        private async Task GameLoop()
+        {
+            Draw(gameState);
+            while (!gameState.GameOver)
+            {
+                await Task.Delay(500);
+                gameState.MoveBlockDown();
+                Draw(gameState);
+            }
+        }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (gameState.GameOver)
@@ -116,17 +127,19 @@ namespace Tetris
                 case Key.Z:
                     gameState.RotateBLockCCW();
                     break;
+                default:
+                    break;
             }
 
             Draw(gameState);
         }
 
-        private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
+        private async void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-            Draw(gameState);
+            await GameLoop();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
 
         }
